@@ -59,7 +59,9 @@ class _WasteRecognitionPageState extends State<WasteRecognitionPage>
                             child: Text("Camera is not initialized"),
                           );
                   }
-                  return CircularProgressIndicator();
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }),
           )
         ],
