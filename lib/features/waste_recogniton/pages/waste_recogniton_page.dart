@@ -1,6 +1,7 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:jom_recycle/common/utils/logger.dart';
+import 'package:jom_recycle/features/waste_recogniton/pages/camera_feed.dart';
 
 class WasteRecognitionPage extends StatefulWidget {
   const WasteRecognitionPage({super.key});
@@ -45,16 +46,22 @@ class _WasteRecognitionPageState extends State<WasteRecognitionPage>
     return Scaffold(
       body: Column(
         children: [
-          Center(child: Text("Waste Recogniton")),
+          // Center(child: Text("Waste Recogniton")),
           Expanded(
             child: FutureBuilder(
                 future: _initalizeCamera(),
                 builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("An unexpected error has occurred."),
+                    );
+                  }
+
                   if (snapshot.connectionState == ConnectionState.done) {
                     final controller = snapshot.data!;
 
                     return controller.value.isInitialized
-                        ? CameraPreview(controller)
+                        ? CameraFeed(controller: controller)
                         : SizedBox(
                             child: Text("Camera is not initialized"),
                           );
