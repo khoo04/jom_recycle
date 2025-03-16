@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jom_recycle/app_layout.dart';
 import 'package:jom_recycle/common/theme/app_theme_provider.dart';
+import 'package:jom_recycle/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:jom_recycle/common/theme/app_theme.dart';
 
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
       theme: context.watch<AppThemeProvider>().themeData,
       //Only trigger when system theme is dark mode
       darkTheme: AppTheme.darkTheme,
-      home: const AppLayout(),
+      home: const SplashScreen(),
     );
   }
 }
