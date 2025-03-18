@@ -12,12 +12,13 @@ class WasteRecognitionPage extends StatefulWidget {
 
 class _WasteRecognitionPageState extends State<WasteRecognitionPage>
     with WidgetsBindingObserver {
-  late Future<void> cameraValue;
+  CameraLensDirection _defaultDirection = CameraLensDirection.back;
+  late Map<CameraLensDirection, Widget> availableCameraDireciton;
 
   @override
   void initState() {
     super.initState();
-    cameraValue = _initalizeCamera();
+
     WidgetsBinding.instance.addObserver(this);
   }
 
@@ -29,18 +30,70 @@ class _WasteRecognitionPageState extends State<WasteRecognitionPage>
   }
 
   Future<CameraController> _initalizeCamera() async {
-    final cameras = await availableCameras();
-    final controller = CameraController(
-      cameras.first,
-      ResolutionPreset.high,
-      enableAudio: false,
-    );
-    await controller.initialize();
-    vLog(controller);
-    return controller;
+    try {
+      final List<CameraDescription> cameras = await availableCameras();
+
+      availableCameraDireciton = {
+        for (var camera in cameras)
+          camera.lensDirection: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Text(
+              _cameraLabel(camera.lensDirection),
+              style: const TextStyle(color: Colors.white),
+            ),
+          )
+      };
+
+      final controller = CameraController(
+        cameras.where((c) => c.lensDirection == _defaultDirection).first,
+        ResolutionPreset.high,
+        enableAudio: false,
+      );
+      await controller.initialize();
+      return controller;
+    } on CameraException catch (e) {
+      switch (e.code) {
+        case 'CameraAccessDenied':
+          throw Exception('You have denied camera access.');
+        case 'CameraAccessDeniedWithoutPrompt':
+          // iOS only
+          throw Exception('Please go to Settings app to enable camera access.');
+        case 'CameraAccessRestricted':
+          // iOS only
+          throw Exception('Camera access is restricted.');
+        case 'AudioAccessDenied':
+          throw Exception('You have denied audio access.');
+        case 'AudioAccessDeniedWithoutPrompt':
+          // iOS only
+          throw Exception('Please go to Settings app to enable audio access.');
+        case 'AudioAccessRestricted':
+          // iOS only
+          throw Exception('Audio access is restricted.');
+        default:
+          throw Exception(e.description);
+      }
+    } catch (e) {
+      rethrow;
+    }
   }
 
-//TODO: REFACTOR FOR GOOD STRUCTURE
+  void _onCameraLensChange(CameraLensDirection lensDirection) {
+    setState(() {
+      _defaultDirection = lensDirection;
+    });
+  }
+
+  String _cameraLabel(CameraLensDirection direction) {
+    switch (direction) {
+      case CameraLensDirection.back:
+        return 'Main';
+      case CameraLensDirection.front:
+        return 'Front';
+      case CameraLensDirection.external:
+        return 'External';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -53,15 +106,36 @@ class _WasteRecognitionPageState extends State<WasteRecognitionPage>
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(
-                      child: Text("An unexpected error has occurred."),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            snapshot.error.toString(),
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          SizedBox(height: 8),
+                          ElevatedButton.icon(
+                            onPressed: () {},
+                            icon: Icon(Icons.upload),
+                            label: Text("Upload via Album"),
+                          )
+                        ],
+                      ),
                     );
                   }
-
                   if (snapshot.connectionState == ConnectionState.done) {
                     final controller = snapshot.data!;
 
                     return controller.value.isInitialized
-                        ? CameraFeed(controller: controller)
+                        ? CameraFeed(
+                            controller: controller,
+                            cameraLensDirection: _defaultDirection,
+                            onCameraLensChange: _onCameraLensChange,
+                            availableCameraDireciton: availableCameraDireciton,
+                          )
                         : SizedBox(
                             child: Text("Camera is not initialized"),
                           );
@@ -75,65 +149,4 @@ class _WasteRecognitionPageState extends State<WasteRecognitionPage>
       ),
     );
   }
-
-  // void showInSnackBar(String message) {
-  //   ScaffoldMessenger.of(context)
-  //       .showSnackBar(SnackBar(content: Text(message)));
-  // }
-
-  // void _showCameraException(CameraException e) {
-  //   _logError(e.code, e.description);
-  //   showInSnackBar('Error: ${e.code}\n${e.description}');
-  // }
-
-  // Future<void> _initializeCameraController(
-  //     CameraDescription cameraDescription) async {
-  //   print("hELLO");
-  //   final CameraController cameraController = CameraController(
-  //     cameraDescription,
-  //     kIsWeb ? ResolutionPreset.max : ResolutionPreset.medium,
-  //     enableAudio: false,
-  //     imageFormatGroup: ImageFormatGroup.jpeg,
-  //   );
-
-  //   controller = cameraController;
-
-  //   // If the controller is updated then update the UI.
-  //   cameraController.addListener(() {
-  //     if (mounted) {
-  //       setState(() {
-  //         print("hELLO");
-  //       });
-  //     }
-  //     if (cameraController.value.hasError) {
-  //       showInSnackBar(
-  //           'Camera error ${cameraController.value.errorDescription}');
-  //     }
-  //   });
-
-  //   try {
-  //     await cameraController.initialize();
-  //   } on CameraException catch (e) {
-  //     switch (e.code) {
-  //       case 'CameraAccessDenied':
-  //         showInSnackBar('You have denied camera access.');
-  //       case 'CameraAccessDeniedWithoutPrompt':
-  //         // iOS only
-  //         showInSnackBar('Please go to Settings app to enable camera access.');
-  //       case 'CameraAccessRestricted':
-  //         // iOS only
-  //         showInSnackBar('Camera access is restricted.');
-  //       case 'AudioAccessDenied':
-  //         showInSnackBar('You have denied audio access.');
-  //       case 'AudioAccessDeniedWithoutPrompt':
-  //         // iOS only
-  //         showInSnackBar('Please go to Settings app to enable audio access.');
-  //       case 'AudioAccessRestricted':
-  //         // iOS only
-  //         showInSnackBar('Audio access is restricted.');
-  //       default:
-  //         _showCameraException(e);
-  //     }
-  //   }
-  // }
 }
