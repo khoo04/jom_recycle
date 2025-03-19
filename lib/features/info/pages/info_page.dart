@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class InfoPage extends StatefulWidget {
   const InfoPage({super.key});
@@ -8,6 +9,8 @@ class InfoPage extends StatefulWidget {
 }
 
 class _InfoPageState extends State<InfoPage> {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,30 +22,34 @@ class _InfoPageState extends State<InfoPage> {
             end: Alignment.bottomCenter,
           ),
         ),
-        child: ListView(
-          padding: EdgeInsets.all(16),
-          children: [
-            InfoTile(
-              title: "Why Recycling Matters?",
-              content: "Recycling helps to reduce waste, conserve resources, and protect the environment.",
-              icon: Icons.recycling,
-            ),
-            InfoTile(
-              title: "How to Start Recycling?",
-              content: "Separate waste into plastics, glass, and paper. Find local recycling centers.",
-              icon: Icons.tips_and_updates,
-            ),
-            InfoTile(
-              title: "Impact of Waste on Earth",
-              content: "Excess waste contributes to pollution, climate change, and harms wildlife.",
-              icon: Icons.clean_hands_outlined,
-            ),
-            InfoTile(
-              title: "Fun Recycling Facts",
-              content: "Recycling one aluminum can saves enough energy to power a TV for 3 hours!",
-              icon: Icons.fact_check,
-            ),
-          ],
+        child: StreamBuilder<QuerySnapshot>(
+          stream: _firestore.collection('info').snapshots(), // Fetching from Firestore
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              print("Firestore Error: ${snapshot.error}");
+              return Center(child: Text("Error loading data"));
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            }
+            if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+              return Center(child: Text("No information available in Firestore"));
+            }
+
+            final infoDocs = snapshot.data!.docs;
+
+            return ListView(
+              padding: EdgeInsets.all(16),
+              children: infoDocs.map((doc) {
+                Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+                return InfoTile(
+                  title: data['title'] ?? 'No Title',
+                  content: data['content'] ?? 'No Content',
+                  icon: Icons.info, // Default icon, you can store icons in Firestore if needed
+                );
+              }).toList(),
+            );
+          },
         ),
       ),
     );
