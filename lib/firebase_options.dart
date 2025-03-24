@@ -3,6 +3,7 @@
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
+import 'package:jom_recycle/common/secrets/app_secret.dart';
 
 /// Default [FirebaseOptions] for use with your Firebase apps.
 ///
@@ -41,7 +42,7 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyC63z2Q72BznQhyXK5nojT8TxJN9SrWB40',
+    apiKey: AppSecret.firebaseWebApiKey,
     appId: '1:563601735159:web:6e1f6f85d4092a35ab42f2',
     messagingSenderId: '563601735159',
     projectId: 'jom-recycle-backend',
@@ -50,7 +51,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyALnZnqRXuhTt_dlGbZkXp7oKujvHIO3Yk',
+    apiKey: AppSecret.firebaseAndroidApiKey,
     appId: '1:563601735159:android:7793fc6bbd8cb38dab42f2',
     messagingSenderId: '563601735159',
     projectId: 'jom-recycle-backend',
@@ -58,7 +59,7 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAaSQg2pWKjqwEFf9EpBIx5W21wYMKUerE',
+    apiKey: AppSecret.firebaseIOSApiKey,
     appId: '1:563601735159:ios:f2d6c39eb780ee84ab42f2',
     messagingSenderId: '563601735159',
     projectId: 'jom-recycle-backend',
@@ -83,5 +84,4 @@ class DefaultFirebaseOptions {
     authDomain: 'jom-recycle-backend.firebaseapp.com',
     storageBucket: 'jom-recycle-backend.firebasestorage.app',
   );
-
 }
