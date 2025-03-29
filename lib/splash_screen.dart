@@ -27,17 +27,23 @@ class _SplashScreenState extends State<SplashScreen>
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
 
     // Navigate to next screen after 5 seconds
-    Future.delayed(Duration(seconds: 5), () {
+    _startApp(context);
+  }
+
+  Future<void> _startApp(BuildContext context) async {
+    await Future.delayed(Duration(seconds: 5));
+    if (context.mounted) {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const AppLayout()),
       );
-    });
+    }
   }
 
   @override
   void dispose() {
     // Restore UI mode & dispose animation controller
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: SystemUiOverlay.values);
     _controller.dispose();
     super.dispose();
   }
@@ -54,11 +60,13 @@ class _SplashScreenState extends State<SplashScreen>
             end: Alignment.bottomLeft,
           ),
         ),
-        child: Center(  // Center the content
+        child: Center(
+          // Center the content
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              RotationTransition(  // Apply rotation animation
+              RotationTransition(
+                // Apply rotation animation
                 turns: _controller,
                 child: Icon(
                   Icons.recycling,
