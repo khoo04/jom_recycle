@@ -1,6 +1,6 @@
 class AppSecret {
   //Google Maps Platform API Key
-  static const mapAPIKey = "YOUR API KEY";
+  static const mapAPIKey = "AIzaSyDEUdUnGjGZrww9E6f4VvApVeX5CRTBC5U";
 
   //Firebase Api Key
   static const firebaseWebApiKey = "<FIREBASE WEB API KEY>";
