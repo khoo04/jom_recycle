@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:jom_recycle/common/utils/logger.dart';
+import 'package:jom_recycle/features/near_me/data/models/place_model.dart';
 import 'package:jom_recycle/features/near_me/pages/location_tile.dart';
 import 'package:jom_recycle/features/near_me/services/places_service.dart';
 import 'package:location/location.dart';
@@ -20,11 +21,11 @@ class _NearMePageState extends State<NearMePage> {
   // var currentLatLng = LatLng(37.7749, -122.4194);
   var _markers = new Set<Marker>();
 
+  List<PlaceModel> recyclingLocations = [];
+
   @override
   void initState() {
     super.initState();
-
-    final placeService = PlacesService();
 
     // placeService.getNearbyRecyclingCenters();
   }
@@ -55,7 +56,7 @@ class _NearMePageState extends State<NearMePage> {
               children: [
                 Text("Recycling Center Near Me"),
                 //TODO: use actual recycling data from google map
-                for (var _ in [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]) LocationTile()
+                for (var place in recyclingLocations) LocationTile(place: place)
               ],
             ),
           ),
@@ -89,5 +90,34 @@ class _NearMePageState extends State<NearMePage> {
     });
 
     vLog(locationData);
+
+    final placeService = PlacesService();
+
+    vLog('balls');
+    final places = await placeService.getNearbyRecyclingCenters(userLatLng);
+
+    places.sort((a, b) => a.distance.compareTo(b.distance));
+    setState(() {
+      recyclingLocations = places;
+    });
+    _addRecyclingCenterMarkers(places);
+    vLog(places);
+  }
+
+  _addRecyclingCenterMarkers(List<PlaceModel> places) async {
+    // final controller = await _controller.future;
+    for (var place in places) {
+      setState(() {
+        _markers.add(
+          Marker(
+              markerId: MarkerId(place.id),
+              position: place.location,
+              infoWindow: InfoWindow(
+                  title: place.name,
+                  snippet:
+                      "${place.distance.toStringAsFixed(2)} km\n${place.vicinity}")),
+        );
+      });
+    }
   }
 }
