@@ -7,5 +7,6 @@ class AppSecret {
   static const firebaseAndroidApiKey = "<FIREBASE ANDROID API KEY>";
   static const firebaseIOSApiKey = "<FIREBASE IOS API KEY";
 
+  static const analyzeImageApiKey = "<ANALYZE IMAGE API KEY>";
   //Add Secret Key As Your Needs
 }

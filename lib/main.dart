@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jom_recycle/app_layout.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'firebase_options.dart';
 import 'package:jom_recycle/common/theme/app_theme_provider.dart';
 import 'package:jom_recycle/splash_screen.dart';
@@ -29,13 +29,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Jom Recycle',
-      debugShowCheckedModeBanner: false,
-      theme: context.watch<AppThemeProvider>().themeData,
-      //Only trigger when system theme is dark mode
-      darkTheme: AppTheme.darkTheme,
-      home: const SplashScreen(),
+    return GlobalLoaderOverlay(
+      child: MaterialApp(
+        title: 'Jom Recycle',
+        debugShowCheckedModeBanner: false,
+        theme: context.watch<AppThemeProvider>().themeData,
+        //Only trigger when system theme is dark mode
+        darkTheme: AppTheme.darkTheme,
+        home: const SplashScreen(),
+      ),
     );
   }
 }

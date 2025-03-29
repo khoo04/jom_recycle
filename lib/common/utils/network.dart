@@ -8,7 +8,7 @@ final class Http {
 
   Http._() {
     _dio = Dio(BaseOptions(
-      baseUrl: "API BASE URL",
+      baseUrl: "https://us-central1-kitahack-jom-recycle.cloudfunctions.net",
       headers: {},
       responseType: ResponseType.json,
       contentType: Headers.jsonContentType,
