@@ -1,7 +1,7 @@
 # 💡 Jom Recycle
 
 ## 🌱 Overview  
-Jom Recycle is a **smart recycling app** designed to help users classify waste using AI and provide guidance on proper disposal. This prototype release includes essential features to test core functionalities and gather feedback for future improvements.  
+Jom Recycle is a **smart recycling app** designed to help users classify waste using AI and provide guidance on proper disposal. 
 
 ## 🔹 Key Features Implemented  
 ✅ **♻️ AI Image Recognition** – Upload or snap a photo to identify the recyclable item type.  
