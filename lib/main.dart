@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'firebase_options.dart';
 import 'package:jom_recycle/common/theme/app_theme_provider.dart';
@@ -9,7 +10,13 @@ import 'package:jom_recycle/common/theme/app_theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  //Force Portrait
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   await Firebase.initializeApp(
+    name: "jom-recycle-backend",
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(

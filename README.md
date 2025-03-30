@@ -1,16 +1,24 @@
-# jom_recycle
+# 💡 Jom Recycle
 
-A new Flutter project.
+## 🌱 Overview  
+Jom Recycle is a **smart recycling app** designed to help users classify waste using AI and provide guidance on proper disposal. This prototype release includes essential features to test core functionalities and gather feedback for future improvements.  
 
-## Getting Started
+## 🔹 Key Features Implemented  
+✅ **♻️ AI Image Recognition** – Upload or snap a photo to identify the recyclable item type.  
+✅ **🗑️ Recycling Guide** – Suggests the correct bin color and handling tips.
+✅ **📍 Nearby Recycling Centers** – Find the nearest recycle center.
+✅ **📚 Recycling Info** – Learn fun facts and best practices.
 
-This project is a starting point for a Flutter application.
+## 🛠️ Tech Stack  
+Jom Recycle integrates **AI and Google technologies** to enhance functionality and user experience:  
 
-A few resources to get you started if this is your first Flutter project:
+- **📱 Frontend:** Flutter  
+- **🗺️ Location Services:** Google Maps API  
+- **☁️ Backend & Database:** Firebase  
+- **🤖 AI Integration:** Google AI Gemini with Serverless Functions 
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## 🌍 SDG Alignment  
+♻️ **Goal 11: Sustainable Cities & Communities** – Promotes responsible recycling.  
+♻️ **Goal 12: Responsible Consumption & Production** – Encourages proper disposal.  
+♻️ **Goal 13: Climate Action** – Reduces environmental impact through waste management.  
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.

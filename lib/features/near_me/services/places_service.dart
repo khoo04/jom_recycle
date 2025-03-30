@@ -12,8 +12,8 @@ class PlacesService {
     final queryParams = <String, String>{
       'key': AppSecret.mapAPIKey,
       'location': "${center.latitude},${center.longitude}",
-      'keyword': "Recycling",
-      'radius': '50000',
+      'keyword': "Recycle Center",
+      'radius': '5000',
     };
 
     final url = Uri.https('maps.googleapis.com',

@@ -32,12 +32,13 @@ class LocationTile extends StatelessWidget {
 
   _openGoogleMap(String placeId) async {
     final url =
-        'https://www.google.com/maps/search/?api=1&query=place_id:$placeId';
+        'https://www.google.com/maps/search/?api=1&query=${place.location.latitude},${place.location.longitude}&query_place_id=$placeId';
 
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    final uri = Uri.parse(url);
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri);
     } else {
-      throw 'Could not launch $url';
+      throw 'Could not open the map.';
     }
   }
 }
