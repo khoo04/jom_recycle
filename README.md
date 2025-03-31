@@ -5,9 +5,9 @@ Jom Recycle is a **smart recycling app** designed to help users classify waste u
 
 ## 🔹 Key Features Implemented  
 ✅ **♻️ AI Image Recognition** – Upload or snap a photo to identify the recyclable item type.  
-✅ **🗑️ Recycling Guide** – Suggests the correct bin color and handling tips.
-✅ **📍 Nearby Recycling Centers** – Find the nearest recycle center.
-✅ **📚 Recycling Info** – Learn fun facts and best practices.
+✅ **🗑️ Recycling Guide** – Suggests the correct bin color and handling tips.     
+✅ **📍 Nearby Recycling Centers** – Find the nearest recycle center.  
+✅ **📚 Recycling Info** – Learn fun facts and best practices.  
 
 ## 🛠️ Tech Stack  
 Jom Recycle integrates **AI and Google technologies** to enhance functionality and user experience:  
